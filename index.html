@@ -181,7 +181,15 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(40px,6.5vw,74px);l
 .payment .big small{font-size:.35em;color:var(--mute)}
 .bar{display:flex;height:10px;border-radius:6px;overflow:hidden;margin:20px 0 8px;background:var(--ink)}
 .bar i{display:block;height:100%}
-.bar .b1{background:var(--accent)}.bar .b2{background:var(--cyan)}.bar .b3{background:#7aa7d8}.bar .b4{background:var(--gold)}
+.bar .b1{background:var(--accent)}.bar .b2{background:var(--cyan)}.bar .b3{background:#7aa7d8}.bar .b4{background:var(--gold)}.bar .b5{background:#9b8ec9}
+.loan-readout{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);margin-top:20px;padding-top:16px}
+.loan-readout .k{font-size:13px;color:var(--mute);font-weight:500}
+.loan-readout .v{font-family:var(--mono);font-size:22px;font-weight:600;letter-spacing:-.02em;color:var(--accent)}
+.seg.small button{font-size:12.5px;padding:9px 6px;letter-spacing:.03em}
+.rows .row.sum span:first-child{color:var(--text);font-weight:600}
+.rows .row.sum span:last-child{font-weight:600}
+.rows .sep{border-top:1px solid var(--line-strong);margin:8px 0 2px}
+.foot-note{font-size:11.5px;color:var(--faint);line-height:1.55;margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--mute);margin-bottom:22px}
 .legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px;vertical-align:middle}
 .rows .row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
@@ -285,7 +293,7 @@ const CONFIG = {
 
 <!-- TOP BAR -->
 <div class="topbar"><div class="wrap">
-  <div class="left">NMLS #2655806 <span class="dot">·</span> Element Mortgage <span class="dot">·</span> Equal Housing Lender <span class="dot">·</span> Licensed: <span data-cfg="statesLicensed"></span></div>
+  <div class="left">NMLS #2655806 <span class="dot">·</span> <a href="https://elementmortgage.com/" target="_blank" rel="noopener">Element Mortgage</a> <span class="dot">·</span> Equal Housing Lender <span class="dot">·</span> Licensed: <span data-cfg="statesLicensed"></span></div>
   <div class="right"><a data-cfg-href="phoneLink" href="#"><span data-cfg="phone"></span></a></div>
 </div></div>
 
@@ -312,7 +320,7 @@ const CONFIG = {
         <span class="pill">NMLS #2655806</span>
       </div>
       <h1>David Michael</h1>
-      <div class="hero-title">Mortgage Loan Officer <span>with</span> <img src="element-logo-white.png" alt="Element Mortgage" /></div>
+      <div class="hero-title">Mortgage Loan Officer <span>with</span> <a href="https://elementmortgage.com/" target="_blank" rel="noopener" aria-label="Element Mortgage"><img src="element-logo-white.png" alt="Element Mortgage" /></a></div>
       <p class="thesis">Everyone deserves a straight answer and a way forward. Whether you're ready to close now or need a few months to get there, you'll leave our first call with a <b>clear plan</b> — never just a "no."</p>
       <p class="subthesis">Conventional, government, NonQM, commercial &amp; hard money. Element Mortgage is a division of American Pacific Mortgage — company-licensed in 49 states.</p>
       <div class="hero-cta">
@@ -431,19 +439,34 @@ const CONFIG = {
         <div class="field pct"><label for="tax">Property Tax / yr</label><div class="input-box"><input type="text" id="tax" value="0.5" inputmode="decimal"><span class="post">%</span></div></div>
         <div class="field"><label for="ins">Home Insurance / yr</label><div class="input-box"><span class="pre">$</span><input type="text" id="ins" value="1,800" inputmode="numeric"></div></div>
       </div>
+      <div class="two">
+        <div class="field"><label for="hoa">HOA Dues / mo *</label><div class="input-box"><span class="pre">$</span><input type="text" id="hoa" value="0" inputmode="numeric"></div></div>
+        <div class="field"><label for="pmiRate">PMI Rate / yr</label><div class="input-box"><input type="text" id="pmiRate" value="0.5" inputmode="decimal"><span class="post">%</span></div></div>
+      </div>
+      <div class="loan-readout"><span class="k">Loan Amount</span><span class="v" id="oLoan">$—</span></div>
     </div>
     <div class="tool">
-      <div class="payment"><div class="cap">Est. Monthly Payment</div><div class="big" id="pay">$—</div></div>
-      <div class="bar" id="bar"><i class="b1" style="width:70%"></i><i class="b2" style="width:15%"></i><i class="b3" style="width:12%"></i><i class="b4" style="width:3%"></i></div>
-      <div class="legend"><span><i style="background:var(--accent)"></i>P&amp;I</span><span><i style="background:var(--cyan)"></i>Tax</span><span><i style="background:#7aa7d8"></i>Insurance</span><span><i style="background:var(--gold)"></i>PMI</span></div>
+      <div class="payment">
+        <div class="cap" id="payCap">Est. Monthly Payment — PITI</div>
+        <div class="big" id="pay">$—</div>
+        <div class="seg small" id="payMode" style="margin-top:16px">
+          <button data-mode="pi">PI</button><button data-mode="piti" class="active">PITI</button><button data-mode="pitia">PITIA</button>
+        </div>
+      </div>
+      <div class="bar" id="bar"><i class="b1" style="width:70%"></i><i class="b2" style="width:12%"></i><i class="b3" style="width:10%"></i><i class="b4" style="width:5%"></i><i class="b5" style="width:3%"></i></div>
+      <div class="legend"><span><i style="background:var(--accent)"></i>P&amp;I</span><span><i style="background:var(--cyan)"></i>Tax</span><span><i style="background:#7aa7d8"></i>Insurance</span><span><i style="background:var(--gold)"></i>PMI</span><span><i style="background:#9b8ec9"></i>HOA</span></div>
       <div class="rows">
         <div class="row"><span>Principal &amp; Interest</span><span id="oPI">$—</span></div>
         <div class="row"><span>Property Tax (est.)</span><span id="oTax">$—</span></div>
         <div class="row"><span>Home Insurance</span><span id="oIns">$—</span></div>
         <div class="row"><span>PMI (est., &lt;20% down)</span><span id="oPMI">$—</span></div>
-        <div class="row"><span>Loan Amount</span><span id="oLoan">$—</span></div>
-        <div class="row total"><span>Total of Payments</span><span id="oTotal">$—</span></div>
+        <div class="row"><span>HOA Dues *</span><span id="oHOA">$—</span></div>
+        <div class="sep"></div>
+        <div class="row sum"><span>PI — Principal &amp; Interest</span><span id="sPI">$—</span></div>
+        <div class="row sum"><span>PITI — + Taxes &amp; Insurance</span><span id="sPITI">$—</span></div>
+        <div class="row sum total"><span>PITIA — + Association Dues</span><span id="sPITIA">$—</span></div>
       </div>
+      <div class="foot-note">* HOA dues are billed separately by your association and are <b>not</b> part of your mortgage payment or escrow. They're included here for budgeting only. PITI includes mortgage insurance where it applies. All figures are estimates — contact David for exact numbers.</div>
     </div>
   </div>
 <!-- Bank Statement Calculator -->
@@ -556,7 +579,7 @@ const CONFIG = {
 <footer class="footer"><div class="wrap">
   <div class="footer-grid">
     <div>
-      <img class="flogo" src="element-logo-white.png" alt="Element Mortgage" />
+      <a href="https://elementmortgage.com/" target="_blank" rel="noopener"><img class="flogo" src="element-logo-white.png" alt="Element Mortgage" /></a>
       <p>David Michael · Mortgage Loan Officer · NMLS #2655806<br>
       Element Mortgage, a division of American Pacific Mortgage Corp.<br>
       APMCORP NMLS #1850<br><br>
@@ -633,26 +656,57 @@ const $=id=>document.getElementById(id);
 
 /* MORTGAGE CALC */
 (function(){
-  const price=$("price"),down=$("down"),downPct=$("downPct"),rate=$("rate"),tax=$("tax"),ins=$("ins");let years=30;
+  const price=$("price"),down=$("down"),downPct=$("downPct"),rate=$("rate"),
+        tax=$("tax"),ins=$("ins"),hoa=$("hoa"),pmiRate=$("pmiRate");
+  let years=30, mode="piti";
+  const LABEL={pi:"PI",piti:"PITI",pitia:"PITIA"};
+
   function calc(){
-    const P=num(price.value),D=num(down.value),loan=Math.max(P-D,0),r=num(rate.value)/100/12,n=years*12;
+    const P=num(price.value),D=num(down.value),loan=Math.max(P-D,0),
+          r=num(rate.value)/100/12,n=years*12;
     const pi=r===0?(n?loan/n:0):loan*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
-    const mTax=P*(num(tax.value)/100)/12,mIns=num(ins.value)/12;
-    const mPMI=(P>0&&loan/P>0.80)?loan*0.005/12:0;
-    const total=pi+mTax+mIns+mPMI;
-    $("pay").innerHTML=money(total)+'<small>/mo</small>';
-    $("oPI").textContent=money(pi);$("oTax").textContent=money(mTax);$("oIns").textContent=money(mIns);
-    $("oPMI").textContent=money(mPMI);$("oLoan").textContent=money(loan);$("oTotal").textContent=money(total*n+D);
-    const t=total||1,b=$("bar").children;
-    b[0].style.width=(pi/t*100)+"%";b[1].style.width=(mTax/t*100)+"%";b[2].style.width=(mIns/t*100)+"%";b[3].style.width=(mPMI/t*100)+"%";
+    const mTax=P*(num(tax.value)/100)/12,
+          mIns=num(ins.value)/12,
+          mHOA=num(hoa.value),
+          mPMI=(P>0&&loan/P>0.80)?loan*(num(pmiRate.value)/100)/12:0;
+
+    const vPI=pi, vPITI=pi+mTax+mIns+mPMI, vPITIA=vPITI+mHOA;
+
+    $("oPI").textContent=money(pi);
+    $("oTax").textContent=money(mTax);
+    $("oIns").textContent=money(mIns);
+    $("oPMI").textContent=money(mPMI);
+    $("oHOA").textContent=money(mHOA);
+    $("oLoan").textContent=money(loan);
+    $("sPI").textContent=money(vPI);
+    $("sPITI").textContent=money(vPITI);
+    $("sPITIA").textContent=money(vPITIA);
+
+    const shown = mode==="pi"?vPI : mode==="piti"?vPITI : vPITIA;
+    $("pay").innerHTML=money(shown)+'<small>/mo</small>';
+    $("payCap").textContent="Est. Monthly Payment — "+LABEL[mode];
+
+    const t=vPITIA||1,b=$("bar").children;
+    b[0].style.width=(pi/t*100)+"%";
+    b[1].style.width=(mTax/t*100)+"%";
+    b[2].style.width=(mIns/t*100)+"%";
+    b[3].style.width=(mPMI/t*100)+"%";
+    b[4].style.width=(mHOA/t*100)+"%";
   }
+
   function fromDollar(){const P=num(price.value),D=num(down.value);if(P>0)downPct.value=(D/P*100).toFixed(1).replace(/\.0$/,"");calc();}
   function fromPct(){const P=num(price.value),p=num(downPct.value);down.value=commas(P*p/100);calc();}
   price.addEventListener("input",()=>{price.value=commas(num(price.value));fromPct();});
-  down.addEventListener("input",fromDollar);downPct.addEventListener("input",fromPct);
-  [rate,tax].forEach(el=>el.addEventListener("input",calc));
-  ins.addEventListener("input",()=>{ins.value=commas(num(ins.value));calc();});
-  document.querySelectorAll("#term button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#term button").forEach(x=>x.classList.remove("active"));b.classList.add("active");years=parseInt(b.dataset.y);calc();}));
+  down.addEventListener("input",fromDollar);
+  downPct.addEventListener("input",fromPct);
+  [rate,tax,pmiRate].forEach(el=>el.addEventListener("input",calc));
+  [ins,hoa].forEach(el=>el.addEventListener("input",()=>{el.value=commas(num(el.value));calc();}));
+  document.querySelectorAll("#term button").forEach(b=>b.addEventListener("click",()=>{
+    document.querySelectorAll("#term button").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");years=parseInt(b.dataset.y);calc();}));
+  document.querySelectorAll("#payMode button").forEach(b=>b.addEventListener("click",()=>{
+    document.querySelectorAll("#payMode button").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");mode=b.dataset.mode;calc();}));
   calc();
 })();
 
